@@ -53,18 +53,35 @@ num_epochs = 1000
 # model = Model(inputs=input_layer, outputs=output_layer)
 
 model = Sequential()
-model.add(Dense(10, input_shape=(5,)))
+model.add(Dense(10, input_shape=(5,), activation='relu'))
 model.add(Dense(5))
 
 sgd = optimizers.SGD(lr=0.001)
 model.compile(optimizer=sgd, loss='mean_squared_error')
 fit_mod = model.fit(train_x, train_y, epochs=num_epochs, batch_size=4, validation_data=(test_x, test_y))
 
-estimated_output = model.predict(train_x)
+estimated_output = model.predict(train_x[0:5])
 a_hat = np.identity(5)
 a_hat = model.predict(a_hat)
-print(a_hat)
-print(real_A - a_hat)
+difference_a = real_A - a_hat
+print("--------------------Using Identity----------------------")
+print("-------------------------------------------------------")
+print("A_hat:\n", a_hat)
+print("A:\n", real_A)
+print("Difference:\n", difference_a)
+print(np.linalg.norm(difference_a))
+print("-------------------------------------------------------")
+
+inverse_x = np.linalg.pinv(estimated_output)
+a_hat_est = np.matmul(estimated_output, inverse_x)
+difference_b = real_A - a_hat_est
+print("--------------------Using Algebra----------------------")
+print("-------------------------------------------------------")
+print("real_A:\n", real_A)
+print("A_hat_est:\n", a_hat_est)
+print("Difference:\n", difference_b)
+print(np.linalg.norm(difference_b))
+print("-------------------------------------------------------")
 
 # plt.plot(fit_mod.history['loss'])
 # plt.plot(fit_mod.history['val_loss'])
