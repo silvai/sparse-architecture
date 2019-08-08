@@ -1,6 +1,6 @@
 # sparse-architecture
 
-To run:
-  synthData.py      to generate data for inputs and outputs
+To run from Command line:\n
+  python synthData.py      to generate data for inputs and outputs
   
-  autoencoder.py    to show loss values and difference between A and A_hat
+  python autoencoder.py    to show loss values and difference between A and A_hat using linear algebra and the identity matrix.
